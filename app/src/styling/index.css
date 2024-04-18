@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #030216;
+  /* background-color: #38388f; */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root {
+  /* --primary-color: #007bff; Blue */
+  /* --secondary-color: #6c757d;  */
+}
+
+/* .gradient-text {
+  background-color: #f3ec78;
+  background-image: linear-gradient(#f3ec78, #af4261);
+  background-image: conic-gradient(#f3ec78, #af4261);
+} */
+.gradient-text {
+  background-color: #f3ec78;
+  /* background-image: linear-gradient(45deg, #f3ec78, #af4261); */
+  /* background: linear-gradient(45deg, rgba(255,0,232,1) 0%, rgba(0,228,255,1) 100%); */
+  background: linear-gradient(45deg, rgba(255,0,232,1) 0%, rgba(0,255,192,1) 100%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-text-fill-color: transparent;
+}
+
+.bg-gradient-custom {
+  background: linear-gradient(45deg, #141d96 0%, rgb(6, 112, 158) 100%);
+}
+
+.bg-gradient-custom:hover {
+  background: linear-gradient(45deg, #0c136b 0%, rgba(5,99,138,1) 100%);
+  /* background: linear-gradient(45deg, #0c136b 0%, rgb(237, 237, 237) 100%); */
+}

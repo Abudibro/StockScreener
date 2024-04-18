@@ -1,0 +1,86 @@
+// Define your display font weights
+$display-font-weights: (
+  1: 300,
+  2: 400,
+  3: 500,
+  4: 600,
+  5: 700,
+  6: 800
+);
+
+// Define your display font sizes map
+$display-font-sizes: (
+  1: 5rem,
+  2: 4.5rem,
+  3: 4rem,
+  4: 3.5rem,
+  5: 3rem,
+  6: 2.5rem,
+  text: 1rem
+);
+
+$line-heights: (
+  normal: normal,
+  tight: 1.1,
+  snug: 1.2,
+  loose: 1.5,
+  font-size: 1,
+  relative: 1.2em,
+  percentage: 150%, // 1.5 times the font size
+  fixed-pixels: 20px // Example fixed pixel value
+);
+
+@supports (-webkit-text-stroke: 1px black) {
+    // Define CSS variables for stroke size and color
+    :root {
+      --stroke-size-1: 1px;
+      --stroke-size-2: 2px;
+      --stroke-size-3: 3px;
+      --stroke-size-4: 4px;
+      --stroke-size-5: 5px;
+      // Add more as needed
+    }
+  
+    // Define CSS classes for strokes with different sizes
+    .stroke-1 {
+      -webkit-text-stroke: var(--stroke-size-1) white;
+    }
+
+    .stroke-2 {
+      -webkit-text-stroke: var(--stroke-size-2) white;
+    }
+  
+    .stroke-3 {
+      -webkit-text-stroke: var(--stroke-size-3) white;
+    }
+  
+    .stroke-4 {
+      -webkit-text-stroke: var(--stroke-size-4) white;
+    }
+  
+    .stroke-5 {
+      -webkit-text-stroke: var(--stroke-size-5) white;
+    }
+  
+    // Add more classes for different stroke sizes
+  }
+
+// Define your display line height
+// $display-line-height: $headings-line-height;
+
+// Generate heading styles based on font sizes and font weights
+
+@each $height, $line-height in $line-heights {
+    .height-#{$height} {
+        line-height: $line-height;
+    }
+}
+
+@each $size, $font-size in $display-font-sizes {
+  @each $weight, $font-weight in $display-font-weights {
+    .heading-#{$size}-weight-#{$weight} {
+      font-size: $font-size;
+      font-weight: $font-weight;
+    }
+  }
+}
