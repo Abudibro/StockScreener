@@ -20,7 +20,7 @@ export const scrapeMarketChameleon = async (filters) => {
             return []; // or handle it according to your requirement
         }
 
-        const noItems = stock[0].querySelector('.dataTables_empty');
+        const noItems = stocks[0].querySelector('.dataTables_empty');
         if (noItems) return []
 
         return stocks.map(stock => {
