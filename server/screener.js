@@ -15,19 +15,34 @@ export const scrapeMarketChameleon = async (filters) => {
 
     const data = await page.evaluate(() => {
         const stocks = Array.from(document.querySelectorAll('#eq_screener_tbl tbody tr'));
+
+        if (stocks.length === 0) {
+            return []; // or handle it according to your requirement
+        }
+
+        const noItems = stock[0].querySelector('.dataTables_empty');
+        if (noItems) return []
+
         return stocks.map(stock => {
+
+            const symbolElement = stock.querySelector('.mplink');
+            const companyNameElement = stock.querySelector('.wrappablecell');
+            const priceElement = stock.querySelector('.rightcelltd:nth-child(3)');
+            const percentageChangeElement = stock.querySelector('.rightcelltd:nth-child(4)');
+            const volumeElement = stock.querySelector('.rightcelltd:nth-child(5)');
+            const avgVolumeElement = stock.querySelector('.rightcelltd:nth-child(6)');
+            const marketCapElement = stock.querySelector('.rightcelltd:nth-child(8)');
             const movingAvgIndicatorElement = stock.querySelector('.centercelltd span');
-            const movingAvgIndicator = movingAvgIndicatorElement ? movingAvgIndicatorElement.textContent.trim() : null;
     
             return {
-                symbol: stock.querySelector('.mplink').textContent.trim(),
-                companyName: stock.querySelector('.wrappablecell').textContent.trim(),
-                price: stock.querySelector('.rightcelltd:nth-child(3)').textContent.trim(),
-                percentageChange: stock.querySelector('.rightcelltd:nth-child(4)').textContent.trim(),
-                volume: stock.querySelector('.rightcelltd:nth-child(5)').textContent.trim(),
-                avgVolume: stock.querySelector('.rightcelltd:nth-child(6)').textContent.trim(),
-                marketCap: stock.querySelector('.rightcelltd:nth-child(8)').textContent.trim(),
-                movingAvgIndicator
+                symbol: symbolElement ? symbolElement.textContent.trim() : null,
+                companyName: companyNameElement ? companyNameElement.textContent.trim() : null,
+                price: priceElement ? priceElement.textContent.trim() : null,
+                percentageChange: percentageChangeElement ? percentageChangeElement.textContent.trim() : null,
+                volume: volumeElement ? volumeElement.textContent.trim() : null,
+                avgVolume: avgVolumeElement ? avgVolumeElement.textContent.trim() : null,
+                marketCap: marketCapElement ? marketCapElement.textContent.trim() : null,
+                movingAvgIndicator: movingAvgIndicatorElement ? movingAvgIndicatorElement.textContent.trim() : null,
             };
         });
     });
@@ -47,7 +62,7 @@ const applyFilters = async (filters, page) => {
         avgStockVolume,
         maTechnicalIndicator,
         rsi,
-        // minprice
+        price
     } = filters;
 
     const stockAttributes = [
@@ -61,8 +76,7 @@ const applyFilters = async (filters, page) => {
         { cNum: 51, prefix: null, value: avgStockVolume },
         { cNum: 59, prefix: null, value: maTechnicalIndicator },
         { cNum: 45, prefix: null, value: rsi },
-        { cNum: 31, prefix: null, value: 'Has Options' },
-        { cNum: 2, prefix: null, value: 'Below 25.00' },
+        { cNum: 2, prefix: null, value: price },
         
     ]
 
@@ -77,12 +91,11 @@ const applyFilters = async (filters, page) => {
         if (attribute.value === 'Any') return;
         applyFilter(attribute, page)
     })
-
 }
 
 const applyFilter = async ({cNum, prefix, value}, page) => {
     await page.waitForSelector(`select[name="c${cNum}"]`);
-    await page.select(`select[name="c${cNum}"]`, prefix ? `${prefix} ${value}` : value);
+    await page.select(`select[name="c${cNum}"]`, value);
 }
 
 export default {

@@ -10,7 +10,7 @@ const StockFinderPage = () => {
   const [avgStockVolume, setAvgStockVolume] = useState(settings.avgStockVolume.defaultValue);
   const [rsi, setRsi] = useState(settings.RSI.defaultValue);
   const [minIV30, setMinIV30] = useState(settings.minIV30.defaultValue);
-  const [maxIV30, setMaxIV30] = useState(settings.maxIV30.defaultValue);
+  const [price, setPrice] = useState(settings.price.defaultValue);
   const [maTechnicalIndicator, setMATechnicalIndicator] = useState(settings.MATechnicalIndicator.defaultValue);
 
   const onSubmitSearch = () => {
@@ -18,7 +18,7 @@ const StockFinderPage = () => {
       minMarketCap,
       stockType,
       minIV30, 
-      maxIV30, 
+      price, 
       avgStockVolume,
       maTechnicalIndicator,
       rsi
@@ -26,6 +26,16 @@ const StockFinderPage = () => {
       console.log(data)
   });
   }
+
+  console.log({
+    minMarketCap,
+    stockType,
+    minIV30, 
+    price, 
+    avgStockVolume,
+    maTechnicalIndicator,
+    rsi
+  })
 
   return (
     <div className="d-flex align-items-center justify-content-center vh-100">
@@ -42,7 +52,7 @@ const StockFinderPage = () => {
               </Row>
               <Row>
                 <DropdownFilter setting={settings.minIV30} onChange={setMinIV30} />
-                <DropdownFilter setting={settings.maxIV30} onChange={setMaxIV30} />
+                <DropdownFilter setting={settings.price} onChange={setPrice} />
                 <DropdownFilter setting={settings.MATechnicalIndicator} onChange={setMATechnicalIndicator} />
               </Row>
               <Button type="button" onClick={onSubmitSearch} className="w-100 mt-5 bg-gradient-custom" style={{ border: 'none', padding: '1rem 0' }}>

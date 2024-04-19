@@ -11,7 +11,7 @@ export default function DropdownFilter({ setting, onChange, xs }) {
                 <Form.Label className="heading-text-weight-3 text-light">{label}</Form.Label>
                 <Form.Select defaultValue={defaultValue} xs={xs} onChange={(e) => onChange(e.target.value)} className="p-2 heading-text-weight-4" style={{border: 'rgb(0 180 255) 3px solid', background: 'rgb(220 220 220)'}}>
                     {options.map((option, index) => (
-                        <option key={index}>{option}</option>
+                        <option value={option.value} key={index}>{option.label}</option>
                     ))}
                 </Form.Select>
             </Form.Group>
