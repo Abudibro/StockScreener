@@ -3,7 +3,7 @@ import StockFinderPage from "./StockFinder";
 function App() {
 
   return (
-    <div>
+    <div className="" >
       <StockFinderPage />
     </div>
   );

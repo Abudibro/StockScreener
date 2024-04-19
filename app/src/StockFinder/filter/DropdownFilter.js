@@ -8,8 +8,12 @@ export default function DropdownFilter({ setting, onChange, xs }) {
     return (
         <Col>
             <Form.Group className="mb-4 mt-4">
-                <Form.Label className="heading-text-weight-3 text-light">{label}</Form.Label>
-                <Form.Select defaultValue={defaultValue} xs={xs} onChange={(e) => onChange(e.target.value)} className="p-2 heading-text-weight-4" style={{border: 'rgb(0 180 255) 3px solid', background: 'rgb(220 220 220)'}}>
+                <Form.Label className="heading-text-weight-3 text-light" style={{ whiteSpace: 'nowrap' }} >{label}</Form.Label>
+                <Form.Select defaultValue={defaultValue} xs={xs} onChange={(e) => onChange(e.target.value)} className="p-3 heading-text-weight-4" style={{
+                    border:'none',
+                    background: '#00185f',
+                    color: 'white',
+                }}>
                     {options.map((option, index) => (
                         <option value={option.value} key={index}>{option.label}</option>
                     ))}
