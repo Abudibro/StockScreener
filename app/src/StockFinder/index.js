@@ -33,53 +33,37 @@ const StockFinderPage = () => {
       setLoading(false);
       setStocks(data);
     });
+
   }
 
   console.log(stocks)
 
   return (
-    // <div className="d-flex align-items-center justify-content-center vh-100">
-    //   <Container >
-    //     <h1 className="heading-3-weight-4 mb-3 gradient-text text-center ">Wheel Strategy Stock Finder</h1>
-    //     <Row className="justify-content-center">
-    //       <Col xs={12} md={6} lg={3} style={{ maxWidth: '850px', minHeight: '408px', margin: '0 auto', justifyContent: loading ? true : false }} className='d-flex flex-column align-items-center p-3 rounded-3 w-100'>
-    //         {!loading ?
-    //           <>
-    //             <FiltersForm setters={setters} onClick={onSubmitSearch} />
-    //             <StockTable stocks={stocks} />
-    //           </>
-    //           : <Spinner animation="grow" size='lg' variant='light' />
-    //         }
-    //       </Col>
-    //     </Row>
-    //   </Container>
-    // </div>
-
-    <div className="d-flex align-items-center justify-content-center flex-column" style={{ minHeight: '100vh', overflowY: 'hidden' }}>
-      <div style={{ marginTop: '10%', flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Container>
-          <h1 className="heading-3-weight-4 mb-3 gradient-text text-center">Wheel Strategy Stock Finder</h1>
-          <Row className="justify-content-center">
-            <Col xs={12} md={6} lg={3} style={{ maxWidth: '850px', margin: 'auto' }} className='vw-100'>
-              <FiltersForm setters={setters} onClick={onSubmitSearch} />
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <Container>
+    <div className="d-flex align-items-center justify-content-center vh-100">
+      <Container className="position-relative">
         <Row className="justify-content-center">
-          <Col xs={12} md={6} lg={3} style={{ maxWidth: '850px', margin: 'auto' }} className='vw-100'>
-            {!loading ? (
-              <StockTable stocks={stocks} />
-            ) : (
-              <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
-                <Spinner animation="grow" size="lg" variant="light" />
-              </div>
-            )}
+          <Col xs={12} md={6} lg={3} className=" vw-100" style={{ maxWidth: '850px', minHeight: '408px', margin: '0 auto', justifyContent: loading ? true : false }}>
+            <h1 className="heading-3-weight-4 mb-3 text-center gradient-text">Wheel Strategy Stock Finder</h1>
+            <FiltersForm setters={setters} onClick={onSubmitSearch} />
           </Col>
         </Row>
+        <div className="position-absolute top-100 start-40  w-100">
+          <Row className="justify-content-center mt-5">
+            <Col xs={12} md={6} lg={3} className="d-flex flex-column align-items-center p-3 rounded-3 w-100">
+              {
+              loading ? <Spinner animation="grow" size="lg" variant="light" /> :
+              stocks.length > 0 ? <StockTable stocks={stocks} /> :
+              null
+              }
+            </Col>
+          </Row>
+        </div>
       </Container>
     </div>
+
+
+
+
 
 
   );

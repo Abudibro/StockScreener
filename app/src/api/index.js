@@ -1,5 +1,5 @@
 
-export const get = async (url) => {
+export async function get (url) {
     return fetch(url)
     .then(response => {
       if (!response.ok) return "GET_ERROR";
@@ -7,7 +7,3 @@ export const get = async (url) => {
     })
     .catch(error => "GET_ERROR");
 }
-
-export default {
-    get
-};

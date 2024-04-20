@@ -14,6 +14,7 @@ export const scrapeMarketChameleon = async (filters) => {
     await page.waitForSelector('#eq_screener_tbl tbody tr');
 
     const data = await page.evaluate(() => {
+
         const stocks = Array.from(document.querySelectorAll('#eq_screener_tbl tbody tr'));
 
         if (stocks.length === 0) {

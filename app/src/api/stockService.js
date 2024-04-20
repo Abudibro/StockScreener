@@ -1,11 +1,11 @@
 import { get } from "./index";
 const BASE_URL = 'http://localhost:8080';
 
-export const getStockPrice = (stockName) => {
+export function getStockPrice (stockName) {
     return get(`${BASE_URL}/quote/${stockName}`);
 }
 
-export const getStocks = (filters) => {
+export function getStocks (filters) {
     let query = '';
     for (const key in filters) {
         query += `${key}=${encodeURIComponent(filters[key])}&`
@@ -13,7 +13,3 @@ export const getStocks = (filters) => {
 
     return get(`${BASE_URL}/search?${query}`);
 }
-
-export default {
-    getStockPrice
-};

@@ -1,19 +1,24 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-const StockTableRow = ({ stock }) => {
+const StockTableRow = ({ stock, striped }) => {
+    const trClassName = "vw-100 py-2 stocks-table-row" + (striped ? ' stocks-table-row-striped' : '');
+    const isPriceUp = stock.percentageChange.charAt(0) === '+';
+    const caretClassName = isPriceUp ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill'
 
-  return (
-    <Row className="border-bottom py-2">
-      <Col xs={6} md={4} lg={2}>{stock.symbol}</Col>
-      <Col xs={6} md={6} lg={3}>{stock.companyName}</Col>
-      <Col xs={6} md={2} lg={1}>{stock.price}</Col>
-      <Col xs={6} md={2} lg={1}>{stock.percentageChange}</Col>
-      <Col xs={6} md={2} lg={2}>{stock.volume}</Col>
-      <Col xs={6} md={3} lg={2}>{stock.avgVolume}</Col>
-      <Col xs={6} md={2} lg={1}>{stock.marketCap}</Col>
-      <Col xs={6} md={2} lg={1}>{stock.movingAvgIndicator}</Col>
-    </Row>
+    return (
+        <tr className={trClassName} >
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.symbol}</td>
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.companyName}</td>
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.price}</td>
+            <td className='stocks-table-cell heading-text-weight-3' style={{color: isPriceUp ? '#00ff00' : '#ff2727'}} >
+                <i className={caretClassName} ></i>
+                {stock.percentageChange}
+            </td>
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.avgVolume}</td>
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.marketCap}</td>
+            <td className='stocks-table-cell heading-text-weight-3' >{stock.movingAvgIndicator}</td>
+        </tr>
   );
 };
 
