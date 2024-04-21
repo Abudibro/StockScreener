@@ -3,7 +3,7 @@ import settings from "../settings";
 import { Row, Form, Button } from 'react-bootstrap';
 import DropdownFilter from './DropdownFilter';
 
-const FiltersForm = ({setters, onClick}) => {
+const FiltersForm = ({setters, onClick, disabled}) => {
 
     const {setStockType, setAvgStockVolume, setMATechnicalIndicator, setMinIV30, setMinMarketCap, setRsi, setPrice} = setters;
     return (
@@ -19,7 +19,7 @@ const FiltersForm = ({setters, onClick}) => {
                 <DropdownFilter setting={settings.price} onChange={setPrice} />
                 <DropdownFilter setting={settings.MATechnicalIndicator} onChange={setMATechnicalIndicator} />
             </Row>
-            <Button type="button" onClick={onClick} className="w-100 mt-5 bg-gradient-custom" style={{ border: 'none', padding: '1rem 0' }}>
+            <Button type="button" disabled={disabled} onClick={onClick} className="w-100 mt-5 bg-gradient-custom" style={{ border: 'none', padding: '1rem 0' }}>
                 <p className='heading-text-weight-2 m-0' >Search</p>
             </Button>
         </Form>

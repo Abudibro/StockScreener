@@ -94,7 +94,7 @@ const applyFilters = async (filters, page) => {
     })
 }
 
-const applyFilter = async ({cNum, prefix, value}, page) => {
+const applyFilter = async ({cNum, value}, page) => {
     await page.waitForSelector(`select[name="c${cNum}"]`);
     await page.select(`select[name="c${cNum}"]`, value);
 }

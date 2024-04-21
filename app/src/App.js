@@ -1,11 +1,16 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StockFinderPage from "./StockFinder";
+import StockDetailsPage from "./StockDetailsPage";
 
 function App() {
-
   return (
-    <div >
-      <StockFinderPage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<StockFinderPage />} />
+        <Route path=":stock" element={<StockDetailsPage />} />
+      </Routes>
+    </Router>
   );
 }
 
