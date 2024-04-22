@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<StockFinderPage />} />
-        <Route path=":stock" element={<StockDetailsPage />} />
+        <Route path=":symbol" element={<StockDetailsPage />} />
       </Routes>
     </Router>
   );
