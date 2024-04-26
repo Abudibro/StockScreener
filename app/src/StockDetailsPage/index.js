@@ -12,6 +12,7 @@ const StockDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
     const [stock, setStock] = useState(null)
+    const [chartData, setChartData] = useState();
     const { symbol } = useParams();
 
     const isPriceUp = stock && stock.percentageChange >= 0
@@ -30,7 +31,7 @@ const StockDetailsPage = () => {
             {
             loading ? <Spinner animation="grow" size="lg" variant="light" /> :
             message ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
-            <Col style={{ maxWidth: '850px'}}>
+            <Col style={{ maxWidth: '650px'}}>
                 <Row>
                     <h1 className="heading-6-weight-5 text-white">{stock.shortName}</h1>
                     <h1 className="heading-6-weight-3 text-white">${stock.regularMarketPrice}</h1>
@@ -39,8 +40,8 @@ const StockDetailsPage = () => {
                         {Math.round((stock.regularMarketChange + Number.EPSILON) * 100) / 100}%
                     </p>
                 </Row>
-                <Row style={{minHeight: '450px'}}>
-                    <ChartComponent />
+                <Row style={{minHeight: '400'}}>
+                    <ChartComponent symbol={symbol} initialData={chartData} />
                 </Row>
             </Col>
             }

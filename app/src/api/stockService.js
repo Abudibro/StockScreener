@@ -13,3 +13,7 @@ export function getStocks (filters) {
 
     return get(`${BASE_URL}/search?${query}`);
 }
+
+export function getHistory(symbol, interval) {
+    return get(`${BASE_URL}/history?symbol=${symbol}&interval=${interval}`);
+}

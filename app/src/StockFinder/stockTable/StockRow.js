@@ -1,13 +1,17 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
+
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const StockTableRow = ({ stock, striped }) => {
+    const navigate = useNavigate();
+
     const trClassName = "vw-100 py-2 stocks-table-row" + (striped ? ' stocks-table-row-striped' : '');
     const isPriceUp = stock.percentageChange.charAt(0) === '+';
     const caretClassName = isPriceUp ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill'
 
     return (
-        <tr className={trClassName} >
+        <tr className={trClassName} onClick={() => navigate(`/${stock.symbol}`)} >
             <td className='stocks-table-cell heading-text-weight-3' >{stock.symbol}</td>
             <td className='stocks-table-cell heading-text-weight-3' >{stock.companyName}</td>
             <td className='stocks-table-cell heading-text-weight-3' >{stock.price}</td>

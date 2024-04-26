@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #030216;
+  /* background-color: rgb(0, 24, 95); */
 }
 
 code {
@@ -47,7 +48,7 @@ html {
 }
 
 #stocks-table {
-  --bs-table-color: white;
+  --bs-table-color: #ffffff;
   --bs-table-striped-color: white;
   --bs-table-bg: linear-gradient(90deg, rgba(0,24,95,1) 0%, rgba(1,12,45,1) 100%);
   border-color: transparent;
