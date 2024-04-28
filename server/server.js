@@ -16,10 +16,11 @@ app.get('/', (req, res) => {
 
 app.get('/quote/:stock', async (req, res) => {
     const { stock } = req.params;
-    const stockInfo = await yahooFinance.quote(stock);
+    const queryOptions = { modules: ['price', 'summaryProfile', 'summaryDetail'] };
+    const stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
 
     if (!stockInfo) res.send(ErrorMessage("Oops... we couldn't find the stock " + stock.toUpperCase()))
-    else if (!stockInfo.regularMarketPrice) res.send(ErrorMessage("Please provide a different symbol"))
+    else if (!stockInfo.price.regularMarketPrice) res.send(ErrorMessage("Please provide a different symbol"))
     else res.send(stockInfo);
 });
 
@@ -37,7 +38,7 @@ app.get('/history', async (req, res) => {
   else {
 
     let startDate = stock.firstTradeDateMilliseconds;
-    if (interval === '1d' || '1h') startDate = new Date(new Date().setDate(new Date().getDate() - 729))
+    if (interval === '1h') startDate = new Date(new Date().setDate(new Date().getDate() - 729))
     if (interval === '90m' || interval === '5m') startDate = new Date(new Date().setDate(new Date().getDate() - 59))
 
     const options = {

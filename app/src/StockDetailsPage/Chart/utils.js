@@ -1,10 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import { plotDataLengthBarWidth } from 'react-financial-charts';
+import { RiStockFill } from "react-icons/ri";
+import { MdShowChart } from "react-icons/md";
 
 export const calculateInterval = (period) => {
     if (period === '1d') return '5m';
-    else if (period === '1wk') return '90m';
-    else if (period === '1mo' || period === '3mo') return '1d'
+    else if (period === '1wk') return '1h';
+    else if (period === '1mo') return '90m';
+    else if (period === '3mo') return '1d'
     else return '5d'
 }
 
@@ -64,6 +67,13 @@ export const renderPeriodOptions = (selectedPeriod, changePeriod) => {
     )
 }
 
+export function compactDescription(text) {
+    const sentences = text.split(/[.!?]/);
+    const nonEmptySentences = sentences.filter(sentence => sentence.trim() !== '');
+
+    return nonEmptySentences.slice(0, 2).join('. ') + '.';
+}
+
 export const bbOptions = {
     areaClassName: "react-financial-charts-bollinger-band-series-area",
     fillStyle: "rgba(45, 0, 208, 0.05)",
@@ -93,6 +103,48 @@ export const axisOptions = {
     tickLabelFill: "#f4f4f4" ,
 }
 
+export const lineOptions = {
+    strokeStyle: '#fff',
+    strokeWidth: 2.5,
+    yAccessor: (d) => (d.high + d.low) / 2
+}
+
+export const renderChartOptions = (indicator, changeIndicatorStyle, isBBVisible, setIsBBVisible) => {
+    const options = [
+        {
+            condition: indicator === 'line',
+            callBack: changeIndicatorStyle,
+            callBackProp: 'line',
+            element: <MdShowChart />
+
+        },
+        {
+            condition: indicator === 'candle',
+            callBack: changeIndicatorStyle,
+            callBackProp: 'candle',
+            element: <RiStockFill />
+
+        },
+        {
+            condition: isBBVisible,
+            callBack: setIsBBVisible,
+            callBackProp: !isBBVisible,
+            element: 'BB'
+
+        },
+    ]
+    return (
+        options.map((option, i) => {
+            const { condition, callBack, callBackProp, element } = option;
+            return (
+                <Button className="m-2" variant={condition ? 'light': 'outline-light'} onClick={() => callBack(callBackProp)} >
+                    {element}
+                </Button>
+            )
+        })
+    )
+}
+
 export default {
-    calculateInterval, calculateMin, renderPeriodOptions, bbOptions, candlestickOptions, axisOptions
+    calculateInterval, calculateMin, renderPeriodOptions, compactDescription, bbOptions, candlestickOptions, axisOptions, lineOptions
 }

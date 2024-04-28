@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Nav from "./Nav";
 import { getStockPrice } from "../api/stockService";
+import { compactDescription } from './Chart/utils'
 
 import ChartComponent from './Chart/Chart'
 
@@ -12,7 +14,6 @@ const StockDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
     const [stock, setStock] = useState(null)
-    const [chartData, setChartData] = useState();
     const { symbol } = useParams();
 
     const isPriceUp = stock && stock.percentageChange >= 0
@@ -26,26 +27,52 @@ const StockDetailsPage = () => {
         })
     }, [symbol])
 
+    const width = 800
+    const height = 370;
+
+    const roundToTwo = n => (+n).toFixed(2)
+
     return (
-        <div className="d-flex align-items-center justify-content-center vh-100">
-            {
-            loading ? <Spinner animation="grow" size="lg" variant="light" /> :
-            message ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
-            <Col style={{ maxWidth: '650px'}}>
-                <Row>
-                    <h1 className="heading-6-weight-5 text-white">{stock.shortName}</h1>
-                    <h1 className="heading-6-weight-3 text-white">${stock.regularMarketPrice}</h1>
-                    <p className="heading-7-weight-3" style={{color: isPriceUp ? '#00ff00' : '#ff2727'}}>
-                        <i className={caretClassName} ></i>
-                        {Math.round((stock.regularMarketChange + Number.EPSILON) * 100) / 100}%
-                    </p>
-                </Row>
-                <Row style={{minHeight: '400'}}>
-                    <ChartComponent symbol={symbol} initialData={chartData} />
-                </Row>
-            </Col>
-            }
-        </div>
+        <>
+            <Nav />
+            <div className="d-flex justify-content-center" >
+                {
+                loading ? <Spinner animation="grow" size="lg" variant="light" /> :
+                message ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
+                <Col style={{ maxWidth: `${width}px`, marginTop: '3vh'}}>
+                    <h1 className="heading-5-weight-5 gradient-text" style={{width: 'fit-content'}} >{stock.price.shortName}</h1>
+                    <Row style={{marginBottom: '20px'}} >
+                        <h1 className="heading-6-weight-3 text-white">${roundToTwo(stock.price.regularMarketPrice)}</h1>
+                        <p className="heading-8-weight-3" style={{color: isPriceUp ? '#00ff00' : '#ff2727'}}>
+                            <i className={caretClassName} ></i>
+                            {roundToTwo(stock.price.regularMarketChange)}%
+                        </p>
+                    </Row>
+                    <Row className="mt-2 mb-2" style={{minHeight: height}}>
+                        <ChartComponent symbol={symbol} height={height} width={width} />
+                    </Row>
+                    <Row className="mt-4">
+                        <div>
+                            <h1 className="heading-7-weight-5 gradient-text" style={{width: 'fit-content'}} >About {symbol.toUpperCase()}</h1>
+                        </div>
+                        <Col md={8} >
+                            <h1 className="heading-text-weight-3 text-white" > {compactDescription(stock.summaryProfile.longBusinessSummary)} </h1>
+                        </Col>
+                        <Col md={4} className="d-flex">
+                            <Col>
+                                <h1 className="heading-text-weight-6 text-white" >52W Low:</h1>
+                                <h1 className="heading-text-weight-3 text-white" >${roundToTwo(stock.summaryDetail.fiftyTwoWeekLow)} </h1>
+                            </Col>
+                            <Col>
+                                <h1 className="heading-text-weight-6 text-white" >52W High:</h1>
+                                <h1 className="heading-text-weight-3 text-white" >${roundToTwo(stock.summaryDetail.fiftyTwoWeekHigh)} </h1>
+                            </Col>
+                        </Col>
+                    </Row>
+                </Col>
+                }
+            </div>
+        </>
     )
 }
 
