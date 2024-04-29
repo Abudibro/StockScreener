@@ -68,11 +68,20 @@ export const renderPeriodOptions = (selectedPeriod, changePeriod) => {
 }
 
 export function compactDescription(text) {
+    // Terms to exclude
+    const excludedTerms = ["Inc.", "Co.", ".com", 'Ltd.', 'Corp.', '. com'];
+
     const sentences = text.split(/[.!?]/);
     const nonEmptySentences = sentences.filter(sentence => sentence.trim() !== '');
 
-    return nonEmptySentences.slice(0, 2).join('. ') + '.';
+    const filteredSentences = nonEmptySentences.filter(sentence => {
+        const lowerCaseSentence = sentence.toLowerCase();
+        return !excludedTerms.some(term => lowerCaseSentence.includes(term.toLowerCase()));
+    });
+
+    return filteredSentences.slice(0, 3).join('. ') + '.';
 }
+
 
 export const bbOptions = {
     areaClassName: "react-financial-charts-bollinger-band-series-area",

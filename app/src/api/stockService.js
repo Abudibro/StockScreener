@@ -15,9 +15,13 @@ export function getStocks (filters) {
 }
 
 export function getHistory(symbol, interval) {
-    return get(`${BASE_URL}/history?symbol=${symbol}&interval=${interval}`);
+    return get(`${BASE_URL}/history?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}`);
 }
 
 export function getSuggestions(search) {
-    return get(`${BASE_URL}/suggestions?search=${search}`)
+    return get(`${BASE_URL}/suggestions?search=${encodeURIComponent(search)}`)
+}
+
+export function getOptions(symbol) {
+    return get(`${BASE_URL}/options?symbol=${encodeURIComponent(symbol)}`)
 }
