@@ -49,7 +49,7 @@ const StockDetailsPage = () => {
         })
     }
 
-    const width = 900
+    const width = 800
     const height = 400;
     const outerDivClassName = `d-flex justify-content-center ${message !== null && 'align-items-center'}`
 

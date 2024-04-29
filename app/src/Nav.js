@@ -35,14 +35,15 @@ const Nav = () => {
     const handleKeyDown = e => {
         if (e.key === 'ArrowUp') {
             e.preventDefault();
-            setSelectedSuggestion((prevIndex) => Math.max(prevIndex - 1, 0));
+            setSelectedSuggestion((prevIndex) => Math.max(prevIndex - 1, -1));
           } else if (e.key === 'ArrowDown') {
             e.preventDefault();
-            setSelectedSuggestion((prevIndex) => Math.min(prevIndex + 1, suggestions.length - 1));
+            setSelectedSuggestion((prevIndex) => prevIndex + 1 === suggestions.length ? 0 : prevIndex + 1);
           } else if (e.key === 'Enter') {
             e.preventDefault();
             if (selectedSuggestion !== -1) handleSelect(suggestions[selectedSuggestion].symbol)
-            else handleSelect(searchValue)
+            else handleSelect(searchValue);
+            setSelectedSuggestion(-1)
           }
     }
 
