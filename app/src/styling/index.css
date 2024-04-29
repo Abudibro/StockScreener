@@ -79,3 +79,36 @@ html {
 g {
   opacity: 1 !important; /* Using !important to ensure the property is overridden */
 }
+
+#searchEntry {
+  background: linear-gradient(#030216, #030216) padding-box,
+              linear-gradient(45deg, rgba(255,0,232,1) 0%, rgba(0,255,192,1) 100%) border-box;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  margin-right: 7px;
+  color: white;
+}
+
+#searchEntry::placeholder {
+  color: white;
+}
+
+.search-dropdown-selected {
+  background: rgba(15, 0, 181, 1);
+  color: white;
+}
+
+.search-dropdown-selected:hover {
+  background: rgba(15, 0, 181, 1);
+  color: white;
+}
+
+.search-dropdown {
+  background: rgba(8, 0, 91, 1);
+  color: white;
+}
+
+.search-dropdown:hover {
+  background: rgba(15, 0, 181, 1);
+  color: white;
+}

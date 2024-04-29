@@ -17,3 +17,7 @@ export function getStocks (filters) {
 export function getHistory(symbol, interval) {
     return get(`${BASE_URL}/history?symbol=${symbol}&interval=${interval}`);
 }
+
+export function getSuggestions(search) {
+    return get(`${BASE_URL}/suggestions?search=${search}`)
+}

@@ -42,7 +42,7 @@ const ChartComponent = ({ symbol, height, width }) => {
 
     useEffect(() => {
         getHistory(symbol, interval).then(resp => {
-            const withDatePrices = resp.quotes.map(pricePoint => {
+            const withDatePrices = !resp.error && resp.quotes.map(pricePoint => {
                 return { ...pricePoint, date: new Date(pricePoint.date) }; 
             })
             setInitialData(withDatePrices)

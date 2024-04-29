@@ -36,7 +36,7 @@ const StockFinderPage = () => {
   }
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100">
+    <div className="d-flex align-items-center justify-content-center" style={{minHeight: 'calc(100vh - 64px)'}}>
       <Container className="position-relative">
         <Row className="justify-content-center">
           <Col xs={12} md={6} lg={3} className=" vw-100" style={{ maxWidth: '850px', minHeight: '408px', margin: '0 auto', justifyContent: loading ? true : false }}>
