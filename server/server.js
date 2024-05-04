@@ -16,11 +16,21 @@ app.get('/', (req, res) => {
 
 app.get('/quote/:stock', async (req, res) => {
     const { stock } = req.params;
+    if (!stock) {
+      res.send(ErrorMessage("Please provide a ticker symbol"));
+      return;
+    }
     const queryOptions = { modules: ['price', 'summaryProfile', 'summaryDetail'] };
-    const stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
+    let stockInfo;
 
-    if (!stockInfo) res.send(ErrorMessage("Oops... we couldn't find the stock " + stock.toUpperCase()))
-    else if (!stockInfo.price.regularMarketPrice) res.send(ErrorMessage("Please provide a different symbol"))
+    try {
+      stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
+    } catch (error) {
+      res.send(ErrorMessage("Oops... we couldn't find the stock " + stock.toUpperCase()));
+      return;
+    }
+
+    if (stock === null || !stockInfo.price.regularMarketPrice || stockInfo.price.quoteType !== 'EQUITY') res.send(ErrorMessage("Please provide a different symbol"))
     else res.send(stockInfo);
 });
 
@@ -28,30 +38,65 @@ app.get('/search', async (req, res) => {
   scrapeMarketChameleon(req.query).then(data => res.json(data));
 });
 
+app.get('/suggestions', async (req, res) => {
+  const { search } = req.query;
+
+  if (!search) {
+    res.send(ErrorMessage("Search cannot be empty"));
+    return;
+  }
+  try {
+    const result = await yahooFinance.search(search, {quotesCount: 4, newsCount: 0, enableNavLinks: false});
+    res.send(result);
+  } catch (error) {
+    res.send(ErrorMessage("Something went wrong"))
+  }
+});
+
 app.get('/history', async (req, res) => {
   const { symbol, interval } = req.query;
   console.log(req.query)
   const stock = await yahooFinance.quote(symbol);
 
-  if (!stock) res.send(ErrorMessage("Oops... we couldn't find the stock " + symbol.toUpperCase()))
-  else if (!stock.regularMarketPrice) res.send(ErrorMessage("Please provide a different symbol"))
-  else {
-
-    let startDate = stock.firstTradeDateMilliseconds;
-    if (interval === '1h') startDate = new Date(new Date().setDate(new Date().getDate() - 729))
-    if (interval === '90m' || interval === '5m') startDate = new Date(new Date().setDate(new Date().getDate() - 59))
-
-    const options = {
-      period1: startDate,
-      interval
+  try {
+    if (!stock) res.send(ErrorMessage("Oops... we couldn't find the stock " + symbol.toUpperCase()))
+    else if (!stock.regularMarketPrice) res.send(ErrorMessage("Please provide a different symbol"))
+    else {
+  
+      let startDate = stock.firstTradeDateMilliseconds;
+      if (interval === '1h') startDate = new Date(new Date().setDate(new Date().getDate() - 729))
+      if (interval === '90m' || interval === '5m') startDate = new Date(new Date().setDate(new Date().getDate() - 59))
+  
+      const options = {
+        period1: startDate,
+        interval
+      }
+  
+      const history = await yahooFinance.chart(symbol, {...options});
+  
+      if (!history) res.send(ErrorMessage("Oops... we couldn't find the chart data for " + symbol.toUpperCase()))
+      else res.send(history);
     }
+  } catch (error) {
+    res.send(ErrorMessage("Something went wrong"))
+  }
+})
 
-    const history = await yahooFinance.chart(symbol, {...options});
+app.get('/options', async (req, res) => {
+  const {symbol} = req.query;
 
-    if (!history) res.send(ErrorMessage("Oops... we couldn't find the chart data for " + symbol.toUpperCase()))
-    else res.send(history);
+  if (!symbol) {
+    res.send(ErrorMessage("Please provide a ticker symbol"));
+    return;
   }
 
+  try {
+    const queryOptions = { lang: 'en-US', formatted: false, region: 'US' };
+    const result = await yahooFinance.options(symbol, queryOptions);
+    if (result !== null) res.send(result)
+  } catch (error) {
+    res.send(ErrorMessage("Something went wrong"))
+  }
 })
 
 app.listen(port, () => {

@@ -16,9 +16,28 @@ const StockDetailsPage = () => {
     const [stock, setStock] = useState(null)
     const [panel, setPanel] = useState('options')
     const { symbol } = useParams();
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-    const isPriceUp = stock && stock.percentageChange >= 0
-    const caretClassName = stock && isPriceUp ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill'
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const roundToTwo = n => (+n).toFixed(2)
+
+    const marketChange = roundToTwo(((stock?.price?.regularMarketPrice - stock?.price?.regularMarketPreviousClose) / stock?.price?.regularMarketPreviousClose) * 100);
+    const caretClassName = marketChange >= 0 ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill'
+
+    const outerDivClassName = `d-flex justify-content-center align-items-center`
+    const minWidth = 800
+    const resultedWidth = Math.min(1196 , Math.max(windowWidth * 0.7, minWidth));
+    console.log(windowWidth, resultedWidth)
+    const height = 400;
 
     useEffect(() => {
         getStockPrice(symbol).then(resp => {
@@ -49,25 +68,19 @@ const StockDetailsPage = () => {
         })
     }
 
-    const width = 800
-    const height = 400;
-    const outerDivClassName = `d-flex justify-content-center ${message !== null && 'align-items-center'}`
-
-    const roundToTwo = n => (+n).toFixed(2)
-
     return (
         <div className={outerDivClassName} style={{height: message !== null && 'calc(100vh - 64px)'}} >
             {
             loading ? <Spinner animation="grow" size="lg" variant="light" /> :
             message !== null ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
-            <Col style={{ maxWidth: `${width}px`, marginTop: '3vh'}}>
+            <Col style={{ maxWidth: resultedWidth, marginTop: '1vh'}}>
                 <h1 className="heading-5-weight-5 gradient-text" style={{width: 'fit-content'}} >{stock?.price?.shortName}</h1>
                 <Row style={{marginBottom: '20px'}} >
                     <Col md={8} >
                         <h1 className="heading-6-weight-3 text-white">${roundToTwo(stock?.price?.regularMarketPrice)}</h1>
-                        <p className="heading-8-weight-3" style={{color: isPriceUp ? '#00ff00' : '#ff2727'}}>
+                        <p className="heading-8-weight-3" style={{color: marketChange >= 0 ? '#00ff00' : '#ff2727'}}>
                             <i className={caretClassName} ></i>
-                            {roundToTwo(stock?.price?.regularMarketChange)}%
+                            {marketChange > 0 ? '+' + marketChange : marketChange}%
                         </p>
                     </Col>
                     <Col md={4}>
@@ -79,7 +92,7 @@ const StockDetailsPage = () => {
                 <Row className="mt-2 mb-2" style={{minHeight: height}}>
                     {
                         panel === 'quotes' ?
-                        <ChartComponent symbol={symbol} height={height} width={width} />
+                        <ChartComponent symbol={symbol} height={height} width={resultedWidth} />
                         : panel === 'options' ?
                         <OptionsChain symbol={symbol} />
                         : null
@@ -95,7 +108,7 @@ const StockDetailsPage = () => {
                     <Col md={4} className="d-flex">
                         <Col>
                             <h1 className="heading-text-weight-6 text-white" >52W Low:</h1>
-                            <h1 className="heading-text-weight-3 text-white" >{roundToTwo(stock?.summaryDetail?.fiftyTwoWeekLow)}</h1>
+                            <h1 className="heading-text-weight-3 text-white" >${roundToTwo(stock?.summaryDetail?.fiftyTwoWeekLow)}</h1>
                         </Col>
                         <Col>
                             <h1 className="heading-text-weight-6 text-white" >52W High:</h1>

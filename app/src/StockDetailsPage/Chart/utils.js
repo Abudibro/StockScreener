@@ -6,9 +6,9 @@ import { MdShowChart } from "react-icons/md";
 export const calculateInterval = (period) => {
     if (period === '1d') return '5m';
     else if (period === '1wk') return '1h';
-    else if (period === '1mo') return '90m';
+    else if (period === '1mo') return '1h';
     else if (period === '3mo') return '1d'
-    else return '5d'
+    else return '1d'
 }
 
 export const calculateMin = (selectedPeriod, data) => {
@@ -68,7 +68,6 @@ export const renderPeriodOptions = (selectedPeriod, changePeriod) => {
 }
 
 export function compactDescription(text) {
-    // Terms to exclude
     const excludedTerms = ["Inc.", "Co.", ".com", 'Ltd.', 'Corp.', '. com'];
 
     const sentences = text.split(/[.!?]/);

@@ -88,15 +88,15 @@ const ChartComponent = ({ symbol, height, width }) => {
 
     const timeDisplayFormat = timeFormat("%d %b");
 
-    const ratio = 5/4;
+    const ratio = 3/2;
 
     return (
-        <div className="d-flex align-items-center justify-content-center" style={{width, height: height}}>
+        <div className="d-flex align-items-center justify-content-center" style={{width, height: height+54}}>
             {
                 loading ? <Spinner animation="grow" size="lg" variant="light" /> :
                 <div>
                     <ChartCanvas
-                        height={height-54}
+                        height={height}
                         width={width}
                         ratio={ratio}
                         margin={margin}

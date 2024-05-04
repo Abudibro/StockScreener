@@ -12,93 +12,116 @@ const OptionsChain = ({symbol}) => {
     useEffect(() => {
         getOptions(symbol).then(resp => {
             if (!resp.error) {
-                console.log(resp)
                 setCalls(resp.options[0]?.calls);
                 setPuts(resp.options[0]?.puts);
                 setStrikes(resp.strikes);
                 setPrice(resp?.quote?.regularMarketPrice)
+                setLoading(false)
             }
         })
     }, [symbol])
 
-    const LineBreak = ({hidden, currentPrice}) => <hr className="w-100" style={{ border: 'none', borderTop: `2px solid ${ currentPrice ? 'white' : hidden ? 'transparent' : 'grey'}`, margin: '10px 0 10px 0', padding: '0' }} />;
-    const Cell = ({value, heading}) => {
+    const LineBreak = ({ isStrikeRow, hidden }) => {
         return (
-            <Col className="d-flex align-items-center justify-content-center mt-2 mb-2" >
-                <p className={`heading-text-weight-${heading ? '5' : '3'} m-0 p-0 h-100`} >{value}</p>
-            </Col>
+            <hr className="w-100 mt-1 mb-2" style={{ 
+                border: 'none',
+                borderTop: `${hidden ? '22' : '2' }px solid ${ isStrikeRow ? 'white' : hidden ? 'transparent' : 'grey'}`,
+                margin: hidden ? '0' : '10px 0 10px 0',
+                padding: '0',
+                opacity: (isStrikeRow || hidden) && '1',
+                background: hidden && 'rgb(45, 0, 208)'
+            }} />
+        )
+    };
+
+    const RowSpacing = ({hidden, isStrikeRow}) => {
+        const iconClassName = 'm-0 p-0';
+        const iconStyle = {
+            width: 'fit-content',
+            fontSize: 13,
+        }
+        return (
+            isStrikeRow && hidden ? 
+            <Row className="w-100" style={{flexWrap: 'nowrap' }}>
+                <div className="w-100 m-0 p-0 d-flex align-items-center justify-content-center" style={{background: 'white', height: 18}} >
+                    <p className="w-100 m-0 p-0" style={{color:'black', background: 'none', fontSize: 11}}>Current </p>
+                </div>
+            </Row> :
+            <LineBreak hidden={hidden} isStrikeRow={isStrikeRow} />
         )
     }
 
-    const renderOptions = (type) => {
-        const isCalls = type === 'calls';
-        const data = isCalls ? calls : puts
+    const Cell = ({value, heading, bg, isStrikeRow, hidden}) => {
         return (
-            data.map((optn, i) => {
-                const currentPrice = i < data.length - 1 && optn?.strike < price && price < data[i+1].strike
-                return (
-                    <Row key={i} className="text-center">
-                        <Cell value={optn?.bid} />
-                        <Cell value={optn?.ask} />
-                        <Cell value={optn?.volume} />
-                        <Cell value={optn?.openInterest} />
-                        <LineBreak currentPrice={currentPrice} />
-                    </Row>
-                )
-            })
+            <Col className="d-flex align-items-center justify-content-center flex-column w-100" style={{background: bg, margin: bg && '0', padding: '0'}} >
+                <p className={`heading-text-weight-${heading ? '5' : '3'} m-0 p-0 h-100`} >{value}</p>
+                <RowSpacing isStrikeRow={isStrikeRow} hidden={hidden} />
+            </Col>
+
         )
     }
 
     const renderStrikes = () => {
-        return (
-            strikes?.map((strike, i) => {
-                const currentPrice = i < strikes.length - 1 && strike.strike < price && price < strikes[i+1].strike
-                return (
-                    <Row className="text-center">
-                        <Cell value={strike} heading />
-                        <LineBreak hidden currentPrice={currentPrice} />
+        return strikes.map((strike, i) => {
+            const call = calls.find(call => call.strike === strike);
+            const put = puts.find(put => put.strike === strike);
+            const isStrikeRow = i < strikes.length - 1 && strike < price && price < strikes[i+1];
+    
+            return (
+                <>
+                    <Row key={i} className="text-center">
+                        <Cell value={call?.bid || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={call?.ask|| 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={call?.volume || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={call?.openInterest || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={strike} heading bg={'rgb(45, 0, 208)'} isStrikeRow={isStrikeRow} hidden />
+                        <Cell value={put?.bid || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={put?.ask || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={put?.volume || 0} isStrikeRow={isStrikeRow} />
+                        <Cell value={put?.openInterest || 0} isStrikeRow={isStrikeRow} />
                     </Row>
-                )
-            })
-        )
+                </>
+            );
+        });
+    };
+    
+    const getCallStrikePrice = (strikePrice) => {
+        return calls.find(call => call.strike === strikePrice) || '';
     }
+    
+    const getPutStrikePrice = (strikePrice) => {
+        return puts.find(put => put.strike === strikePrice) || '';
+    }
+    
 
     return (
-        <Row className="mt-3 text-white">
-            <Col xs={12} md={5} style={{padding: '0'}} >
-                <Row><h6 className="heading-8-weight-4 text-center mb-0" >Calls</h6></Row>
-                <LineBreak />
-                <Row className="text-center">
-                    <Cell value={'Bid'} heading />
-                    <Cell value={'Ask'} heading />
-                    <Cell value={'Delta'} heading />
-                    <Cell value={'Volume'} heading />
+        <Container>
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                <Row className="mt-3 text-white">
+                    <Col xs={12} md={12}>
+                        <Row>
+                            <Col><h1 className="heading-8-weight-4 text-center text-white" >Calls</h1></Col>
+                            <Col><h1 className="heading-8-weight-4 text-center text-white" >Puts</h1></Col>
+                        </Row>
+                        <RowSpacing />
+                        <Row className="text-center">
+                            <Cell value={'Bid'} heading />
+                            <Cell value={'Ask'} heading />
+                            <Cell value={'Volume'} heading />
+                            <Cell value={'Open Interest'} heading />
+                            <Cell value={'Strike'} heading bg={'rgb(45, 0, 208)'} hidden />
+                            <Cell value={'Bid'} heading />
+                            <Cell value={'Ask'} heading />
+                            <Cell value={'Volume'} heading />
+                            <Cell value={'Open Interest'} heading />
+                        </Row>
+                        {renderStrikes()}
+                    </Col>
                 </Row>
-                <LineBreak />
-                {renderOptions('calls')}
-            </Col>
-
-
-            <Col xs={12} md={2} style={{background: 'rgba(45, 0, 208, 1)'}}>
-                <Row><h6 className="heading-8-weight-4 text-center mb-0 p-0" >STRIKES</h6></Row>
-                <LineBreak hidden />
-                {renderStrikes()}
-            </Col>
-
-
-            <Col xs={12} md={5} style={{padding: '0'}}>
-                <Row><h6 className="heading-8-weight-4 text-center mb-0" >Puts</h6></Row>
-                <LineBreak />
-                <Row className="text-center">
-                    <Cell value={'Bid'} heading />
-                    <Cell value={'Ask'} heading />
-                    <Cell value={'Delta'} heading />
-                    <Cell value={'Volume'} heading />
-                </Row>
-                <LineBreak />
-                {renderOptions('puts')}
-            </Col>
-        </Row>
+            )}
+        </Container>
     );
 }
 
