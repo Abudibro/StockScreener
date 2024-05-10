@@ -14,7 +14,7 @@ const StockDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
     const [stock, setStock] = useState(null)
-    const [panel, setPanel] = useState('options')
+    const [panel, setPanel] = useState('quotes')
     const { symbol } = useParams();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -36,8 +36,7 @@ const StockDetailsPage = () => {
     const outerDivClassName = `d-flex justify-content-center align-items-center`
     const minWidth = 800
     const resultedWidth = Math.min(1196 , Math.max(windowWidth * 0.7, minWidth));
-    console.log(windowWidth, resultedWidth)
-    const height = 400;
+    const panelHeight = 400;
 
     useEffect(() => {
         getStockPrice(symbol).then(resp => {
@@ -69,10 +68,12 @@ const StockDetailsPage = () => {
     }
 
     return (
+        loading ? 
+        <div className="d-flex align-items-center justify-content-center" style={{width: '100vw', height: 'calc(100vh - 128px)'}}  >
+            <Spinner animation="grow" size="lg" variant="light" />
+        </div> :
         <div className={outerDivClassName} style={{height: message !== null && 'calc(100vh - 64px)'}} >
-            {
-            loading ? <Spinner animation="grow" size="lg" variant="light" /> :
-            message !== null ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
+            {message !== null ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
             <Col style={{ maxWidth: resultedWidth, marginTop: '1vh'}}>
                 <h1 className="heading-5-weight-5 gradient-text" style={{width: 'fit-content'}} >{stock?.price?.shortName}</h1>
                 <Row style={{marginBottom: '20px'}} >
@@ -89,12 +90,12 @@ const StockDetailsPage = () => {
                         </div>
                     </Col>
                 </Row>
-                <Row className="mt-2 mb-2" style={{minHeight: height}}>
+                <Row className="mb-2" style={{minHeight: panelHeight}}>
                     {
                         panel === 'quotes' ?
-                        <ChartComponent symbol={symbol} height={height} width={resultedWidth} />
+                        <ChartComponent symbol={symbol} height={panelHeight} width={resultedWidth} />
                         : panel === 'options' ?
-                        <OptionsChain symbol={symbol} />
+                        <OptionsChain symbol={symbol} height={panelHeight} width={resultedWidth} />
                         : null
                     }
                 </Row>
@@ -116,9 +117,9 @@ const StockDetailsPage = () => {
                         </Col>
                     </Col>
                 </Row>
-            </Col>
-            }
+            </Col>}
         </div>
+        
     )
 }
 

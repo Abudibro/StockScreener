@@ -127,3 +127,7 @@ g {
   height: 3px; /* Adjust thickness as needed */
   background-color: white; /* Adjust color as needed */
 }
+
+#option-chain-scroll::-webkit-scrollbar {
+  display: none;
+}
