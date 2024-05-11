@@ -1,11 +1,7 @@
+const BASE_URL = '/.netlify/functions';
 
 export async function get (url) {
-    return fetch(url)
-    .then(response => {
-      return response.json();
-    })
-    .catch(error => {
-      console.log(error)
-      return "GET_ERROR"
-    });
+    return fetch(BASE_URL + url)
+    .then(response => response.json())
+    .catch(error => "GET_ERROR");
 }

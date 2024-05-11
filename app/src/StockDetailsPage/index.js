@@ -33,7 +33,6 @@ const StockDetailsPage = () => {
     const marketChange = roundToTwo(((stock?.price?.regularMarketPrice - stock?.price?.regularMarketPreviousClose) / stock?.price?.regularMarketPreviousClose) * 100);
     const caretClassName = marketChange >= 0 ? 'bi bi-caret-up-fill' : 'bi bi-caret-down-fill'
 
-    const outerDivClassName = `d-flex justify-content-center align-items-center`
     const minWidth = 800
     const resultedWidth = Math.min(1196 , Math.max(windowWidth * 0.7, minWidth));
     const panelHeight = 400;

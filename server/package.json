@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon server.js"
+    "install": "npm install"
   },
   "dependencies": {
     "cors": "^2.8.5",

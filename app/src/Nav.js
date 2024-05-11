@@ -13,7 +13,6 @@ const Nav = () => {
     const [selectedSuggestion, setSelectedSuggestion] = useState(-1);
 
     const handleSelect = (symbol) => {
-        console.log(symbol)
         setSearchValue(symbol);
         setShowSuggestions(false);
         navigate(`/${symbol}`)
@@ -50,7 +49,11 @@ const Nav = () => {
     return (
         <Navbar className='mt-1 mb-1' >
             <Container>
-                <p></p>
+                <h1
+                    className='heading-7-weight-5 text-white'
+                    onClick={() => navigate('/')}
+                    style={{cursor: 'pointer'}}
+                >Stock Screener</h1>
                 <Form className="d-flex position-relative">
                     <FormControl
                         type="search"
