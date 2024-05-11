@@ -90,6 +90,8 @@ const ChartComponent = ({ symbol, height, width }) => {
 
     const ratio = 3/2;
 
+    console.log(selectedPeriod)
+
     return (
         <div className="d-flex align-items-center justify-content-center" style={{width, height: height+54}}>
             {

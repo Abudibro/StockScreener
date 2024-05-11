@@ -5,8 +5,7 @@ import { MdShowChart } from "react-icons/md";
 
 export const calculateInterval = (period) => {
     if (period === '1d') return '5m';
-    else if (period === '1wk') return '1h';
-    else if (period === '1mo') return '1h';
+    else if (period === '1wk' || period === '1mo') return '1h';
     else if (period === '3mo') return '1d'
     else return '1d'
 }

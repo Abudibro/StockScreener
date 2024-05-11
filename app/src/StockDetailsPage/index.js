@@ -44,7 +44,8 @@ const StockDetailsPage = () => {
             else {
                 setMessage(null);
                 setStock(resp);
-            } 
+            }
+            setPanel('quotes')
             setLoading(false);
         })
     }, [symbol])
@@ -68,12 +69,12 @@ const StockDetailsPage = () => {
     }
 
     return (
-        loading ? 
-        <div className="d-flex align-items-center justify-content-center" style={{width: '100vw', height: 'calc(100vh - 128px)'}}  >
-            <Spinner animation="grow" size="lg" variant="light" />
-        </div> :
-        <div className={outerDivClassName} style={{height: message !== null && 'calc(100vh - 64px)'}} >
-            {message !== null ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
+        <div
+            className="d-flex align-items-center justify-content-center"
+            style={{height: (message !== null || loading) && 'calc(100vh - 64px)'}}
+        >
+            {loading ? <Spinner animation="grow" size="lg" variant="light" /> :
+            message !== null ? <h1 className="heading-5-weight-4 mb-3 text-center gradient-text">{message}</h1> :
             <Col style={{ maxWidth: resultedWidth, marginTop: '1vh'}}>
                 <h1 className="heading-5-weight-5 gradient-text" style={{width: 'fit-content'}} >{stock?.price?.shortName}</h1>
                 <Row style={{marginBottom: '20px'}} >
@@ -118,8 +119,7 @@ const StockDetailsPage = () => {
                     </Col>
                 </Row>
             </Col>}
-        </div>
-        
+        </div>    
     )
 }
 
