@@ -1,7 +1,7 @@
 [build]
   command = "npm run build --ignore-warnings"
   publish = "build"
-  functions = "server/functions"
+  functions = "app/server/functions"
 
 
 [build.environment]
