@@ -8,9 +8,12 @@ app.use(cors());
 
 app.get('/.netlify/functions/search', async (req, res) => {
   try {
-    scrapeMarketChameleon(req.query).then(data => res.json(data));
+    scrapeMarketChameleon(req.query).then(data => {
+      const response = res.json(data);
+      res.status(200).send(response);
+    });
   } catch (e) {
-    res.send(ErrorMessage("Something went wrong..."))
+    res.status(400).send(ErrorMessage("Something went wrong..."))
   }
 });
 
