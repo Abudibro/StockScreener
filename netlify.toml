@@ -1,5 +1,5 @@
 [build]
-  command = "cd server && npm install && cd ../ && npm run build --ignore-warnings"
+  command = "npm run build --ignore-warnings"
   publish = "build"
   functions = "netlify/functions"
 
