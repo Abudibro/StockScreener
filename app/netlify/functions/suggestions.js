@@ -10,14 +10,14 @@ app.get('/.netlify/functions/suggestions', async (req, res) => {
   const { search } = req.query;
 
   if (!search) {
-    res.send(ErrorMessage("Search cannot be empty"));
+    res.status(400).send(ErrorMessage("Search cannot be empty"));
     return;
   }
   try {
     const result = await yahooFinance.search(search, {quotesCount: 4, newsCount: 0, enableNavLinks: false});
-    res.send(result);
+    res.status(200).send(result);
   } catch (error) {
-    res.send(ErrorMessage("Something went wrong"))
+    res.status(400).send(ErrorMessage("Something went wrong"))
   }
 });
 
