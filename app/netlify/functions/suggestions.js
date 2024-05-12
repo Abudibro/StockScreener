@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import yahooFinance from 'yahoo-finance2';
+import { sendResponse } from '../util';
 
 const app = express();
 
@@ -15,18 +16,14 @@ app.get('/.netlify/functions/suggestions', async (req, res) => {
   }
   try {
     const result = await yahooFinance.search(search, {quotesCount: 4, newsCount: 0, enableNavLinks: false});
-    res.status(200).send(result);
+    // sendResponse(res, 200, result)
+    res.status(200);
+    res.end(result);
   } catch (error) {
     res.status(400).send(ErrorMessage("Something went wrong"))
   }
 });
 
-const ErrorMessage = (msg) => {
-  return ({
-    error: {
-      message: msg
-    }
-  })
-}
+
 
 export { app as handler }; // Export the Express app as a handler for Netlify function
