@@ -14,6 +14,7 @@ app.get('/.netlify/functions/search', async (req, res) => {
     response = await scrapeMarketChameleon(req.query);
     res.status(200).send(response);
   } catch (e) {
+    console.log(e)
     res.status(400).send(ErrorMessage("Something went wrong..."))
   }
 });

@@ -20,8 +20,8 @@ app.get('/.netlify/functions/quote/:stock', async (req, res) => {
       if (stock === null || !stockInfo.price.regularMarketPrice || stockInfo.price.quoteType !== 'EQUITY') res.send(ErrorMessage("Please provide a different symbol"))
       else res.send(stockInfo);
     } catch (error) {
+      console.log(error)
       res.send(ErrorMessage("Oops... we couldn't find the stock " + stock.toUpperCase()));
-      return;
     }
 });
 
