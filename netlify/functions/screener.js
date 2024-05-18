@@ -19,7 +19,7 @@ const userAgentPool = [
 
 export const scrapeMarketChameleon = async (filters) => { 
 
-    const ua = getUA();
+    const ua = getRandomUserAgent();
     const browser = await puppeteer.launch({
         args: [...chromium.args, '--disable-gpu'],
         defaultViewport: chromium.defaultViewport,
