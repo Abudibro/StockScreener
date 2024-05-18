@@ -96,12 +96,18 @@ const applyFilters = async (filters, page) => {
         applyFilter(attribute, page)
     })
 
-    await page.click('#eq_scr_pricetech');
+    try {
+        await page.waitForSelector('#eq_scr_pricetech');
+        await page.click('#eq_scr_pricetech'); 
+        
+        technicalAttributes.map(attribute => {
+            if (attribute.value === 'Any') return;
+            applyFilter(attribute, page)
+        })
+    } catch (error) {
+        console.log('some error innit', error)
+    }
 
-    technicalAttributes.map(attribute => {
-        if (attribute.value === 'Any') return;
-        applyFilter(attribute, page)
-    })
 }
 
 const applyFilter = async ({cNum, value}, page) => {
