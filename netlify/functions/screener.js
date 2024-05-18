@@ -10,13 +10,13 @@ export const scrapeMarketChameleon = async (filters) => {
     const browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath('/var/task/node_modules/@sparticuz/chromium/bin')) || (await await chromium.executablePath()),
+        executablePath: process.env.CHROME_EXECUTABLE_PATH || (await await chromium.executablePath()),
         headless: true
     })
     const page = await browser.newPage();
     page.setUserAgent(ua);
   
-    await page.goto('https://marketchameleon.com/Screeners/Stocks', { timeout: 500 });
+    await page.goto('https://marketchameleon.com/Screeners/Stocks');
 
     await applyFilters(filters, page);
 
