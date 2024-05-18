@@ -3,14 +3,14 @@ import chromium from 'chrome-aws-lambda';
 
 export const scrapeMarketChameleon = async (filters) => { 
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
+    page.setUserAgent(ua);
 
     const browser = await puppeteer.launch({
-        args: [...chromium.args, '--no-sandbox'],
+        args: [...chromium.args],
         executablePath: await chromium.executablePath,
-        headless: true,
+        headless: chromium.headless,
     });
     const page = await browser.newPage();
-    page.setUserAgent(ua);
   
     await page.goto('https://marketchameleon.com/Screeners/Stocks');
 
