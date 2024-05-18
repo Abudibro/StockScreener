@@ -97,7 +97,6 @@ const applyFilters = async (filters, page) => {
     })
 
     try {
-        await page.waitForSelector('#eq_scr_pricetech');
         await page.click('#eq_scr_pricetech'); 
         
         technicalAttributes.map(attribute => {
