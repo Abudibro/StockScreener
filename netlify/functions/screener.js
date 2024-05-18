@@ -1,16 +1,17 @@
-import puppeteer from 'puppeteer-core';
-import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer';
+import chromium from '@sparticuz/chromium';
 
 export const scrapeMarketChameleon = async (filters) => { 
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
-    page.setUserAgent(ua);
 
     const browser = await puppeteer.launch({
-        args: [...chromium.args],
-        executablePath: await chromium.executablePath,
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
         headless: chromium.headless,
+        ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
+    page.setUserAgent(ua);
   
     await page.goto('https://marketchameleon.com/Screeners/Stocks');
 

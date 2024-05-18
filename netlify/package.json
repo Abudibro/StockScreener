@@ -1,8 +1,10 @@
 {
     "dependencies": {
+        "@sparticuz/chromium": "^123.0.1",
         "cors": "^2.8.5",
         "express": "^4.19.2",
         "puppeteer": "^22.6.5",
+        "puppeteer-core": "^22.9.0",
         "serverless-http": "^3.2.0",
         "yahoo-finance2": "^2.11.2"
     },
