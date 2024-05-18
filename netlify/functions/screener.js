@@ -3,7 +3,11 @@ import puppeteer from 'puppeteer';
 export const scrapeMarketChameleon = async (filters) => { 
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
 
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({
+        args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+        executablePath: await chromium.executablePath,
+        headless: true,
+    });
     const page = await browser.newPage();
     page.setUserAgent(ua);
   
