@@ -12,11 +12,10 @@ app.get('/.netlify/functions/search', async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   try {
     response = await scrapeMarketChameleon(req.query);
+    res.status(200).send(response);
   } catch (e) {
     res.status(400).send(ErrorMessage("Something went wrong..."))
   }
-
-  res.status(200).send(response);
 });
 
 const ErrorMessage = (msg) => {
