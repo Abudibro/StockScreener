@@ -1,17 +1,14 @@
 {
     "dependencies": {
-        "@sparticuz/chromium": "^123.0.1",
+        "@sparticuz/chromium": "^113.0.1",
         "cors": "^2.8.5",
         "express": "^4.19.2",
-        "puppeteer": "^22.9.0",
+        "puppeteer-core": "^20.1.1",
         "serverless-http": "^3.2.0",
         "yahoo-finance2": "^2.11.2"
     },
     "devDependencies": {
         "nodemon": "^3.1.0"
     },
-    "externalDependencies": [
-        "puppeteer"
-    ],
     "type": "module"
 }

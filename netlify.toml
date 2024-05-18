@@ -4,8 +4,8 @@
   publish = "build"
 
 [functions]
-  external_node_modules = ["express"]
   node_bundler = "esbuild"
+  external_node_modules = ["express", "@sparticuz/chromium"]
 
 [build.environment]
   CI = "false"

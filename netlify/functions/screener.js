@@ -1,10 +1,17 @@
-import puppeteer from 'puppeteer';
+import chromium from '@sparticuz/chromium'
+import puppeteer from 'puppeteer-core'
+
+chromium.setHeadlessMode = true
+chromium.setGraphicsMode = false
 
 export const scrapeMarketChameleon = async (filters) => { 
 
     const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
-
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath('/var/task/node_modules/@sparticuz/chromium/bin')) || (await await chromium.executablePath()),
+    })
     const page = await browser.newPage();
     page.setUserAgent(ua);
   
@@ -19,7 +26,7 @@ export const scrapeMarketChameleon = async (filters) => {
         const stocks = Array.from(document.querySelectorAll('#eq_screener_tbl tbody tr'));
 
         if (stocks.length === 0) {
-            return []; // or handle it according to your requirement
+            return [];
         }
 
         const noItems = stocks[0].querySelector('.dataTables_empty');
