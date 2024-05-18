@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StockFinderPage from "./StockFinder";
-import StockDetailsPage from "./StockDetailsPage";
-import Nav from "./Nav";
+import StockFinderPage from "./StockFinder/index.js";
+import StockDetailsPage from "./StockDetailsPage/index.js";
+import Nav from "./Nav.js";
 
 function App() {
   return (

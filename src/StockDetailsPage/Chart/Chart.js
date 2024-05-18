@@ -8,8 +8,8 @@ import {
     axisOptions,
     lineOptions,
     renderChartOptions,
-} from "./utils";
-import { getHistory } from "../../api/stockService";
+} from "./utils.js";
+import { getHistory } from "../../api/stockService.js";
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 

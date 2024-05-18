@@ -19,7 +19,7 @@ const StockTable = ({ stocks }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {stocks.map((stock, i) => {
+                    {stocks?.map((stock, i) => {
                         return <StockTableRow stock={stock} key={i} striped={i % 2 === 0} />
                     })}
                 </tbody>

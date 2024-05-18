@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getSuggestions } from './api/stockService';
+import { getSuggestions } from './api/stockService.js';
 
 import { Navbar, Container, FormControl, Button, Form, Dropdown } from 'react-bootstrap';
 import { IoMdSearch } from "react-icons/io";
@@ -22,7 +22,7 @@ const Nav = () => {
         const value = event.target.value;
         if (value !== '') {
             getSuggestions(value).then(resp => {
-                setSuggestions(resp.quotes.filter(q => q.isYahooFinance && q.typeDisp === 'Equity'));
+                if (resp.quotes) setSuggestions(resp.quotes.filter(q => q.isYahooFinance && q.typeDisp === 'Equity'));
             })
         }
         setSearchValue(value);

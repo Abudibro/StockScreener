@@ -24,7 +24,7 @@ export const scrapeMarketChameleon = async (filters) => {
         const noItems = stocks[0].querySelector('.dataTables_empty');
         if (noItems) return []
 
-        return stocks.map(stock => {
+        return stocks?.map(stock => {
 
             const symbolElement = stock.querySelector('.mplink');
             const companyNameElement = stock.querySelector('.wrappablecell');

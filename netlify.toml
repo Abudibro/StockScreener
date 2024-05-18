@@ -1,8 +1,8 @@
 [build]
-  command = "npm run build --ignore-warnings"
+  command = "npm run build"
+  functions = "netlify/functions/"
   publish = "build"
-  functions = "netlify/functions"
 
-
-[build.environment]
-  CI = "false"
+[functions]
+  external_node_modules = ["express"]
+  node_bundler = "esbuild"

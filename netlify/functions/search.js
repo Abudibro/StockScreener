@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import serverless from 'serverless-http';
 import { scrapeMarketChameleon } from './screener.js';
 
 const app = express();
@@ -7,14 +8,15 @@ const app = express();
 app.use(cors());
 
 app.get('/.netlify/functions/search', async (req, res) => {
+  let response;
+  res.setHeader('Cache-Control', 'no-store');
   try {
-    scrapeMarketChameleon(req.query).then(data => {
-      const response = res.json(data);
-      res.status(200).send(response);
-    });
+    response = await scrapeMarketChameleon(req.query);
   } catch (e) {
     res.status(400).send(ErrorMessage("Something went wrong..."))
   }
+
+  res.status(200).send(response);
 });
 
 const ErrorMessage = (msg) => {
@@ -25,4 +27,4 @@ const ErrorMessage = (msg) => {
   })
 }
 
-export { app as handler }; // Export the Express app as a handler for Netlify function
+export const handler = serverless(app);

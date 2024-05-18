@@ -73,7 +73,7 @@ const settings = {
   },
   MATechnicalIndicator: {
     label: 'MA Technical Indicator', 
-    defaultValue: 'Top Pullback', 
+    defaultValue: 'Any', 
     options: [
       { label: 'Any', value: 'Any' },
       { label: 'Top Pullback', value: 'Top Pullback' },

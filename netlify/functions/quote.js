@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors'; 
+import serverless from 'serverless-http';
 import yahooFinance from 'yahoo-finance2';
 
 const app = express();
@@ -34,4 +35,4 @@ const ErrorMessage = (msg) => {
   })
 }
 
-export { app as handler };
+export const handler = serverless(app);

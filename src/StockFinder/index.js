@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import settings from './settings';
-import { getStocks } from '../api/stockService';
+import { getStocks } from '../api/stockService.js';
 import FiltersForm from './filter/FiltersForm';
 import Spinner from 'react-bootstrap/Spinner';
 import StockTable from './stockTable/StockTable';
@@ -30,8 +30,10 @@ const StockFinderPage = () => {
       maTechnicalIndicator,
       rsi
     }).then(data => {
-      setLoading(false);
-      setStocks(data);
+      if (data && data.length > 0) {
+        setLoading(false);
+        setStocks(data);
+      }
     });
   }
 

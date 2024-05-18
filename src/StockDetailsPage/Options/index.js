@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { getOptions } from "../../api/stockService";
+import { getOptions } from "../../api/stockService.js";
 
 import Spinner from 'react-bootstrap/Spinner';
 import { Row, Col, Container } from 'react-bootstrap';

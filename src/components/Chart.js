@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getStockPrice } from "../api/stockService";
+import { getStockPrice } from "../api/stockService.js";
 
 const Chart = ({ stockName }) => {
     const [stock, setStock] = useState();

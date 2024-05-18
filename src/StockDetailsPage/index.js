@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getStockPrice } from "../api/stockService";
-import { compactDescription } from './Chart/utils'
+import { getStockPrice } from "../api/stockService.js";
+import { compactDescription } from './Chart/utils.js'
 
 import ChartComponent from './Chart/Chart'
 import OptionsChain from "./Options";
