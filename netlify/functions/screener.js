@@ -11,7 +11,7 @@ export const scrapeMarketChameleon = async (filters) => {
         args: [...chromium.args, '--disable-gpu'],
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: true,
         ignoreHTTPSErrors: true,
     })
     const page = await browser.newPage();
@@ -96,16 +96,12 @@ const applyFilters = async (filters, page) => {
         applyFilter(attribute, page)
     })
 
-    try {
-        await page.click('#eq_scr_pricetech'); 
-        
-        technicalAttributes.map(attribute => {
-            if (attribute.value === 'Any') return;
-            applyFilter(attribute, page)
-        })
-    } catch (error) {
-        console.log('some error innit', error)
-    }
+    await page.click('#eq_scr_pricetech');
+
+    technicalAttributes.map(attribute => {
+        if (attribute.value === 'Any') return;
+        applyFilter(attribute, page)
+    })
 
 }
 
