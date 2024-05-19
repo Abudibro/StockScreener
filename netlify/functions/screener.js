@@ -64,17 +64,17 @@ export const scrapeMarketChameleon = async (filters) => {
     });
 
     await page.setRequestInterception(true);
-    page.on('request', (req) => {
-      const url = req.url();
-      if (url.includes('googleads.g.doubleclick.net') || 
-          url.includes('google-analytics.com') || 
-          url.includes('g.doubleclick.net') || 
-          url.includes('ads') || 
-          url.includes('analytics')) {
-        req.abort();
-      } else {
-        req.continue();
-      }
+    page.on('request', (request) => {
+    const blockedResourceTypes = ['image', 'media', 'font', 'texttrack', 'object', 'beacon', 'csp_report', 'imageset'];
+    const blockedUrls = ['google-analytics.com', 'googletagmanager.com', 'googlesyndication.com'];
+    if (
+        blockedResourceTypes.includes(request.resourceType()) ||
+        blockedUrls.some(url => request.url().includes(url))
+    ) {
+        request.abort();
+    } else {
+        request.continue();
+    }
     });
 
     console.log('Navigating to Market Chameleon...');
@@ -87,7 +87,7 @@ export const scrapeMarketChameleon = async (filters) => {
     await applyFilters(filters, page);
 
     console.log('Waiting for table selector...');
-    await page.waitForSelector('#eq_screener_tbl tbody tr');
+    await page.waitForSelector('#eq_screener_tbl tbody tr', { timeout: 60000 });
 
     const data = await page.evaluate(() => {
 
