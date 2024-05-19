@@ -32,8 +32,9 @@ export const scrapeMarketChameleon = async (filters) => {
   
     await page.goto('https://marketchameleon.com/Screeners/Stocks');
 
-    console.log(page.content());
-
+    const htmlContent = await page.content();
+    console.log(htmlContent);
+    
     await applyFilters(filters, page);
 
     await page.waitForSelector('#eq_screener_tbl tbody tr');
