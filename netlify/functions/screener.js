@@ -23,8 +23,8 @@ export const scrapeMarketChameleon = async (filters) => {
     const browser = await puppeteer.launch({
         args: [...chromium.args, '--disable-gpu'],
         defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: true,
+        executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
+        headless: 'new',
         ignoreHTTPSErrors: true,
     })
     const page = await browser.newPage();
