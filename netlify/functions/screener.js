@@ -24,8 +24,7 @@ export const scrapeMarketChameleon = async (filters) => {
         args: [...chromium.args, '--disable-gpu'],
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
-        headless: 'new',
-        ignoreHTTPSErrors: true,
+        headless: chromium.headless,
     })
     const page = await browser.newPage();
     page.setUserAgent(ua);
@@ -34,7 +33,7 @@ export const scrapeMarketChameleon = async (filters) => {
 
     const htmlContent = await page.content();
     console.log(htmlContent);
-    
+
     await applyFilters(filters, page);
 
     await page.waitForSelector('#eq_screener_tbl tbody tr');
