@@ -17,11 +17,28 @@ const userAgentPool = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.5213.15 Safari/537.36'
 ];
 
-export const scrapeMarketChameleon = async (filters) => { 
+const proxyPool = [
+    'http://proxy1:port',
+    'http://proxy2:port',
+    'http://proxy3:port',
+];
 
+const getRandomProxy = () => {
+    const randomIndex = Math.floor(Math.random() * proxyPool.length);
+    return proxyPool[randomIndex];
+}
+
+const getRandomUserAgent = () => {
+    const randomIndex = Math.floor(Math.random() * userAgentPool.length);
+    return userAgentPool[randomIndex];
+}
+
+export const scrapeMarketChameleon = async (filters) => { 
     const ua = getRandomUserAgent();
+    const proxy = getRandomProxy();
+
     const browser = await puppeteer.launch({
-        args: [...chromium.args, '--disable-gpu'],
+        args: [...chromium.args, '--disable-gpu', `--proxy-server=${proxy}`],
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
         headless: chromium.headless,
@@ -78,11 +95,6 @@ export const scrapeMarketChameleon = async (filters) => {
     return data;
 
 };
-
-const getRandomUserAgent = () => {
-    const randomIndex = Math.floor(Math.random() * userAgentPool.length);
-    return userAgentPool[randomIndex];
-}
 
 const applyFilters = async (filters, page) => {
     
