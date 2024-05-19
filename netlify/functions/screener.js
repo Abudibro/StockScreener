@@ -35,18 +35,21 @@ const getRandomUserAgent = () => {
 
 export const scrapeMarketChameleon = async (filters) => { 
     const ua = getRandomUserAgent();
-    // const proxy = getRandomProxy();
 
     const browser = await puppeteer.launch({
         args: [...chromium.args, '--disable-gpu' ],
         defaultViewport: chromium.defaultViewport,
         executablePath: (await chromium.executablePath()),
-        headless: chromium.headless,
+        headless: 'new',
     })
+
     const page = await browser.newPage();
     page.setUserAgent(ua);
   
     await page.goto('https://marketchameleon.com/Screeners/Stocks');
+
+    const htmlContent = await page.content();
+    console.log(htmlContent);
 
     await applyFilters(filters, page);
 
