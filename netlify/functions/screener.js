@@ -38,7 +38,7 @@ export const scrapeMarketChameleon = async (filters) => {
     const proxy = getRandomProxy();
 
     const browser = await puppeteer.launch({
-        args: [...chromium.args, '--disable-gpu', `--proxy-server=${proxy}`],
+        args: [...chromium.args, '--disable-gpu' ],
         defaultViewport: chromium.defaultViewport,
         executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
         headless: chromium.headless,
