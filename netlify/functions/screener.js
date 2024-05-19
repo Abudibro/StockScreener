@@ -46,53 +46,55 @@ export const scrapeMarketChameleon = async (filters) => {
     const page = await browser.newPage();
     page.setUserAgent(ua);
   
-    await page.goto('https://marketchameleon.com/Screeners/Stocks');
-
-    const htmlContent = await page.content();
-    console.log(htmlContent);
-
-    await applyFilters(filters, page);
-
-    await page.waitForSelector('#eq_screener_tbl tbody tr');
-
-    const data = await page.evaluate(() => {
-
-        const stocks = Array.from(document.querySelectorAll('#eq_screener_tbl tbody tr'));
-
-        if (stocks.length === 0) {
-            return [];
-        }
-
-        const noItems = stocks[0].querySelector('.dataTables_empty');
-        if (noItems) return []
-
-        return stocks?.map(stock => {
-
-            const symbolElement = stock.querySelector('.mplink');
-            const companyNameElement = stock.querySelector('.wrappablecell');
-            const priceElement = stock.querySelector('.rightcelltd:nth-child(3)');
-            const percentageChangeElement = stock.querySelector('.rightcelltd:nth-child(4)');
-            const volumeElement = stock.querySelector('.rightcelltd:nth-child(5)');
-            const avgVolumeElement = stock.querySelector('.rightcelltd:nth-child(6)');
-            const marketCapElement = stock.querySelector('.rightcelltd:nth-child(8)');
-            const movingAvgIndicatorElement = stock.querySelector('.centercelltd span');
+    page.goto('https://marketchameleon.com/Screeners/Stocks').then(async () => {
+        console.log('went to website');
+        const htmlContent = await page.content();
+        console.log(htmlContent);
     
-            return {
-                symbol: symbolElement ? symbolElement.textContent.trim() : null,
-                companyName: companyNameElement ? companyNameElement.textContent.trim() : null,
-                price: priceElement ? priceElement.textContent.trim() : null,
-                percentageChange: percentageChangeElement ? percentageChangeElement.textContent.trim() : null,
-                volume: volumeElement ? volumeElement.textContent.trim() : null,
-                avgVolume: avgVolumeElement ? avgVolumeElement.textContent.trim() : null,
-                marketCap: marketCapElement ? marketCapElement.textContent.trim() : null,
-                movingAvgIndicator: movingAvgIndicatorElement ? movingAvgIndicatorElement.textContent.trim() : null,
-            };
+        await applyFilters(filters, page);
+    
+        await page.waitForSelector('#eq_screener_tbl tbody tr');
+    
+        const data = await page.evaluate(() => {
+    
+            const stocks = Array.from(document.querySelectorAll('#eq_screener_tbl tbody tr'));
+    
+            if (stocks.length === 0) {
+                return [];
+            }
+    
+            const noItems = stocks[0].querySelector('.dataTables_empty');
+            if (noItems) return []
+    
+            return stocks?.map(stock => {
+    
+                const symbolElement = stock.querySelector('.mplink');
+                const companyNameElement = stock.querySelector('.wrappablecell');
+                const priceElement = stock.querySelector('.rightcelltd:nth-child(3)');
+                const percentageChangeElement = stock.querySelector('.rightcelltd:nth-child(4)');
+                const volumeElement = stock.querySelector('.rightcelltd:nth-child(5)');
+                const avgVolumeElement = stock.querySelector('.rightcelltd:nth-child(6)');
+                const marketCapElement = stock.querySelector('.rightcelltd:nth-child(8)');
+                const movingAvgIndicatorElement = stock.querySelector('.centercelltd span');
+        
+                return {
+                    symbol: symbolElement ? symbolElement.textContent.trim() : null,
+                    companyName: companyNameElement ? companyNameElement.textContent.trim() : null,
+                    price: priceElement ? priceElement.textContent.trim() : null,
+                    percentageChange: percentageChangeElement ? percentageChangeElement.textContent.trim() : null,
+                    volume: volumeElement ? volumeElement.textContent.trim() : null,
+                    avgVolume: avgVolumeElement ? avgVolumeElement.textContent.trim() : null,
+                    marketCap: marketCapElement ? marketCapElement.textContent.trim() : null,
+                    movingAvgIndicator: movingAvgIndicatorElement ? movingAvgIndicatorElement.textContent.trim() : null,
+                };
+            });
         });
-    });
-
-    await browser.close();
     
-    return data;
+        await browser.close();
+        
+        return data;
+    })
+
 
 };
 
