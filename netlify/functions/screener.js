@@ -39,13 +39,16 @@ export const scrapeMarketChameleon = async (filters) => {
 
     const browser = await puppeteer.launch({
         args: [
-            ...chromium.args,
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
             '--single-process',
             '--disable-gpu'
         ],
+        
         headless: 'new',
         executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath(),
     })
@@ -64,17 +67,17 @@ export const scrapeMarketChameleon = async (filters) => {
     });
 
     await page.setRequestInterception(true);
-    page.on('request', (request) => {
-    const blockedResourceTypes = ['image', 'media', 'font', 'texttrack', 'object', 'beacon', 'csp_report', 'imageset'];
-    const blockedUrls = ['google-analytics.com', 'googletagmanager.com', 'googlesyndication.com'];
-    if (
-        blockedResourceTypes.includes(request.resourceType()) ||
-        blockedUrls.some(url => request.url().includes(url))
-    ) {
-        request.abort();
-    } else {
-        request.continue();
-    }
+    page.on('request', (req) => {
+      const url = req.url();
+      if (url.includes('googleads.g.doubleclick.net') || 
+          url.includes('google-analytics.com') || 
+          url.includes('g.doubleclick.net') || 
+          url.includes('ads') || 
+          url.includes('analytics')) {
+        req.abort();
+      } else {
+        req.continue();
+      }
     });
 
     console.log('Navigating to Market Chameleon...');
@@ -87,7 +90,9 @@ export const scrapeMarketChameleon = async (filters) => {
     await applyFilters(filters, page);
 
     console.log('Waiting for table selector...');
-    await page.waitForSelector('#eq_screener_tbl tbody tr', { timeout: 60000 });
+    await page.waitForSelector('#eq_screener_tbl tbody tr', { timeout: 10000 }).catch(() => {
+        throw new Error('timedout')
+    });
 
     const data = await page.evaluate(() => {
 

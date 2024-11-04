@@ -13,10 +13,11 @@ app.get('/.netlify/functions/quote/:stock', async (req, res) => {
       res.send(ErrorMessage("Please provide a ticker symbol"));
       return;
     }
-    const queryOptions = { modules: ['price', 'summaryProfile', 'summaryDetail'] };
+    const queryOptions = { field: ['price', 'summaryProfile', 'summaryDetail'] };
 
     try {
-      const stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
+      const stockInfo = await yahooFinance.quote(stock);
+      console.log(stockInfo);
       if (stock === null || !stockInfo.price.regularMarketPrice || stockInfo.price.quoteType !== 'EQUITY') res.send(ErrorMessage("Please provide a different symbol"))
       else res.send(stockInfo);
     } catch (error) {
