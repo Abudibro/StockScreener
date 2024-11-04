@@ -16,7 +16,7 @@ app.get('/.netlify/functions/quote/:stock', async (req, res) => {
     const queryOptions = { field: ['price', 'summaryProfile', 'summaryDetail'] };
 
     try {
-      const stockInfo = await yahooFinance.quote(stock);
+      const stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
       console.log(stockInfo);
       if (stock === null || !stockInfo.price.regularMarketPrice || stockInfo.price.quoteType !== 'EQUITY') res.send(ErrorMessage("Please provide a different symbol"))
       else res.send(stockInfo);
