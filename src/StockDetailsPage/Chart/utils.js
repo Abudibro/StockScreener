@@ -67,9 +67,10 @@ export const renderPeriodOptions = (selectedPeriod, changePeriod) => {
 }
 
 export function compactDescription(text) {
+    if (text === null) return "";
     const excludedTerms = ["Inc.", "Co.", ".com", 'Ltd.', 'Corp.', '. com'];
 
-    const sentences = text.split(/[.!?]/);
+    const sentences = text?.split(/[.!?]/);
     const nonEmptySentences = sentences.filter(sentence => sentence.trim() !== '');
 
     const filteredSentences = nonEmptySentences.filter(sentence => {

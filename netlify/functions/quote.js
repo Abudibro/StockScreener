@@ -13,7 +13,7 @@ app.get('/.netlify/functions/quote/:stock', async (req, res) => {
       res.send(ErrorMessage("Please provide a ticker symbol"));
       return;
     }
-    const queryOptions = { field: ['price', 'summaryProfile', 'summaryDetail'] };
+    const queryOptions = { modules: ['price', 'summaryProfile', 'summaryDetail'] };
 
     try {
       const stockInfo = await yahooFinance.quoteSummary(stock, queryOptions);
