@@ -4,6 +4,8 @@ import Table from 'react-bootstrap/Table';
 
 const StockTable = ({ stocks }) => {
 
+    console.log(stocks)
+
     return (
         <div style={{marginBottom: '20px'}} >
             <Table responsive id="stocks-table" striped className="br-2" >
@@ -19,7 +21,7 @@ const StockTable = ({ stocks }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {stocks?.map((stock, i) => {
+                    {Array.isArray(stocks) && stocks?.map((stock, i) => {
                         return <StockTableRow stock={stock} key={i} striped={i % 2 === 0} />
                     })}
                 </tbody>

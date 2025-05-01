@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from "react-router-dom";
+import { debounce } from 'lodash';
 import { getSuggestions } from './api/stockService.js';
 
 import { Navbar, Container, FormControl, Button, Form, Dropdown } from 'react-bootstrap';
@@ -18,15 +19,26 @@ const Nav = () => {
         navigate(`/${symbol}`)
     };
 
+    const fetchSuggestions = async (value) => {
+        const resp = await getSuggestions(value);
+        if (resp.quotes) {
+            setSuggestions(resp.quotes.filter(q => q.isYahooFinance && q.typeDisp === 'Equity'));
+        }
+    };
+
+    const debouncedFetch = useMemo(() => 
+        debounce((value) => {
+            if (value !== '') {
+                fetchSuggestions(value);
+            }
+        }, 500)
+    , []);
+
     const handleChange = (event) => {
         const value = event.target.value;
-        if (value !== '') {
-            getSuggestions(value).then(resp => {
-                if (resp.quotes) setSuggestions(resp.quotes.filter(q => q.isYahooFinance && q.typeDisp === 'Equity'));
-            })
-        }
         setSearchValue(value);
-        setShowSuggestions(value !== '')
+        setShowSuggestions(value !== '');
+        debouncedFetch(value); // Call the debounced function
     };
 
     console.log(selectedSuggestion)

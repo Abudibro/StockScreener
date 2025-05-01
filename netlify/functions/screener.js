@@ -90,8 +90,8 @@ export const scrapeMarketChameleon = async (filters) => {
     await applyFilters(filters, page);
 
     console.log('Waiting for table selector...');
-    await page.waitForSelector('#eq_screener_tbl tbody tr', { timeout: 10000 }).catch(() => {
-        throw new Error('timedout')
+    await page.waitForSelector('#eq_screener_tbl tbody tr', { timeout: 8000 }).catch((e) => {
+        throw new Error(e)
     });
 
     const data = await page.evaluate(() => {
